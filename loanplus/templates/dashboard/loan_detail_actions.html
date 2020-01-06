@@ -1,0 +1,120 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+{% endfor %}
+    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                            <div class="card-header"><strong>Loan Details</strong><small> </small></div>
+                            <div class="card-body card-block">
+
+                                 <form action="{% url 'admin_approve_loan' mloan.loan_id %}" method="POST">
+                                    {% csrf_token %}
+                                     <div class="row form-group">
+                                        <div class="col-6">
+                                            <div class="form-group"><label class=" form-control-label"><i>Loan No.</i></label>
+                                                <p class="form-control-static">{{mloan.loan_id}}</p>
+                                                <input type="hidden" value="{{mloan.loan_id}}" name="loan_id" />
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group"><label class=" form-control-label"><i>Application No.</i></label>
+                                                <p class="form-control-static">{{mloan.app_id}}</p>
+                                                <input type="hidden" value="{{mloan.app_id}}" name="app_id" />
+                                            </div>
+                                        </div>
+                                     </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-8"><label class=" form-control-label">Name</label>
+                                        <input type="text" required="" name="name" placeholder="Enter Full Name" class="form-control" value="{{mloan.cust_name}}"></div>
+
+                                        <div class="col col-4"><label for="text-input" class=" form-control-label">User Id</label>
+                                        <input type="number" required="" name="user_id" placeholder="" class="form-control" value="{{mloan.user_id}}"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-6">
+                                             <label for="city" class=" form-control-label">Type of Loan</label>
+                                                <select name="type_of_loan" class="form-control" required="">
+                                                <option value="">Select Loan Category</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 1 %}selected{% endif %} value="1">Personal Loan   ~interest from 12.0%</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 2 %}selected{% endif %} value="2">Home Loan   ~interest from 10.0%</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 3 %}selected{% endif %} value="3">Car Loan   ~interest from 11.0%</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 4 %}selected{% endif %} value="4">Education Loan   ~interest from 12.0%</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 5 %}selected{% endif %} value="5">Business Loan   ~interest from 15.0%</option>
+                                                    
+                                                        <option {% if mloan.loan_type_id == 6 %}selected{% endif %} value="6">Payday Loan   ~interest from 8.0%</option>
+                                                    
+                                                </select>
+                                        </div>
+
+                                        <div class="col col-6"><label for="phone-input" class=" form-control-label">Phone</label>
+                                        <input type="text" required="" name="phone" placeholder="Enter Phone" class="form-control" value="{{mloan.phone}}"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-6">
+                                        <label class=" form-control-label">Interest Rate</label>
+                                        <input type="text" required="" name="" placeholder="Enter in months" class="form-control" value="{{mloan.interest_rate}}"><small class="help-block form-text"></small>
+                                        </div>
+                                        <div class="col col-6"><label class=" form-control-label">EMI Tenure</label>
+                                        <input type="text" required="" name="emi_tenure" placeholder="Enter in months" class="form-control" value="{{mloan.loan_tenure}}"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label class=" form-control-label">Loan Amount</label>
+                                        <input type="text" required name="loan_amt" placeholder="Enter Loan Amount" class="form-control" value="{{mloan.loan_amount}}"></div>
+
+                                        <div class="col col-6"><label class=" form-control-label">Issue Date</label>
+                                        <input value="{{mloan.issue_date}}" required="" type="text" name="" class="form-control"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-12"><label class=" form-control-label">Address</label>
+                                            <textarea required="" name="address" placeholder="Enter your address" class="form-control">{{mloan.address}}</textarea>
+                                        </div>
+                                    </div>    
+                                    <div class="row form-group">
+                                        <div class="col col-12"><label class=" form-control-label"><b>EMI Details</b></label>
+                                        </div>
+                                    </div>    
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label class=" form-control-label">Interest Amount</label>
+                                        <input value="{{emi.interest_amount}}" required="" type="text" name="int_amt" placeholder="Interest Amount" class="form-control"></div>
+
+                                        <div class="col col-6"><label class=" form-control-label">EMI Amount</label>
+                                        <input value="{{emi.emi_amount}}" required="" type="text" name="emi_amount" class="form-control"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" name="submit" value="approve" class="btn btn-outline-success btn-lg btn-block">Update</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" name="submit" value="delete" class="btn btn-outline-danger btn-lg btn-block">Delete</button>
+                                    </div>
+                                    </div>
+                                
+
+                                </form>        
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock  %}

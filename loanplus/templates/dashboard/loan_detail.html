@@ -1,0 +1,148 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+ {% elif message.tags == 'info' %}
+        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            <span class="badge badge-pill badge-danger">Deleted</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+{% endif %}
+{% endfor %}
+                <div class="row">
+                            <div class="col col-lg-12">
+                                    <section class="card">
+                                        <div class="card-body text-secondary"><b>Loan Sanctioned</b></div>
+                                    </section>
+                            </div>
+
+{% if request.user.is_superuser or request.user.is_staff %}
+                    <div class="col-md-12">
+                        <div class="card">
+                        <div class="card-body">
+                            <div class="table-stats order-table ov-h">
+                                <table id="bootstrap-data-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th class="serial">id</th>
+                                            <th class="serial">user</th>
+                                            <th class="serial">app_id</th>
+                                            <th>Loan Type</th>
+                                            <th>Loan Amount</th>
+                                            <th>Rate</th>
+                                            <th>Phone</th>
+                                            <th>IssueDate</th>
+                                            <th>Name</th>
+                                            <th>Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            {% for application in mloan %}       
+                                        <tr>
+                                            <td><a href="{% url 'admin_loan_details' application.loan_id %}" class="fa fa-share-square-o"></a></td>
+                                            <td> {{application.loan_id}} </td>    
+                                            <td> {{application.user_id}} </td>    
+                                            <td> {{application.app_id}} </td>
+                                            <td>{{application.loan_type.type_of_loan}}</td>
+                                            <td>{{application.loan_amount}}</td>
+                                            <td>{{application.interest_rate}}</td>
+                                            <td>{{application.phone}}</td>
+                                            <td>{{application.issue_date}}</td>
+                                            <td>{{application.cust_name}}</td>
+                                            <td>{{application.address}}</td>
+                                        </tr>
+                            {% endfor %}                               
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% else %}
+                    {% for app in mloan %}
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong class="card-title">{{app.loan_type.type_of_loan}} <span class="badge badge-info float-right mt-3">Sanctioned</span><br><small class="blockquote-footer"><i>issued on: </i>{{app.issue_date}}</small></strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                        <ul class="list-unstyled lu">
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Customer Name
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.cust_name}}</mark>                                
+                                                </div>
+                                            </li>
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Phone
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.phone}}</mark>                                
+                                                </div>
+                                            </li>
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Loan Tenure
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.loan_tenure}}</mark>                                
+                                                </div>
+                                            </li>
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Interest Rate
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.interest_rate}}%</mark>                                
+                                                </div>
+                                            </li>
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Loan Amount
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.loan_amount}}</mark>                                
+                                                </div>
+                                            </li>
+                                            <li class="row">
+                                                <div class="col-md-6">
+                                                    Address
+                                                </div>
+                                                <div class="col-md-6">
+                                                    : <mark>{{app.address}}</mark>                                
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                {% empty %}
+                <div class="col-md-6 offset-md-3">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <h4 class="alert-heading">Well! No Application Found.</h4>
+                        <hr>
+                        <p><a href="{% url 'loan_form' %}" class="btn btn-primary btn-lg">Apply Now</a></p>
+                    </div>        
+                </div>    
+                {% endfor %}                                    
+                </div>                                
+{% endif %}                    
+
+{% endblock  %}

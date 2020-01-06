@@ -1,0 +1,232 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{% static 'frontend/img/favicon.png' %}" type="image/gif">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Loanplus - Loan Company </title>
+    <!-- Bootstrap CSS -->
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'frontend/css/responsive.css' %}">
+</head>
+
+<body class="js">
+    <div id="preloader"></div>
+    <!-- start header area -->
+    <header class="header-area">
+        <div class="topbar-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 text-left">
+                        <div class="left-info">
+                            <p><span class="fa fa-clock"></span>Opening Hours : Mon - Sat : 8.30 to 16.00</p>
+                        </div>
+                    </div>
+                   <div class="col-md-4 text-right">
+                    <div class="second-social">
+                    {% if user.is_authenticated %}
+                        <div class="dropdown my_ac">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hi, {{user.first_name}}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                        </div>
+  
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'register' %}">Register</a>
+                    {% endif %}    
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="logo-right-address">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="sitelogo">
+                            <a href="{% url 'index' %}"><img src="{% static 'frontend/img/logo.png' %}" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="right-address">
+                            <div class="single-address">
+                                <div class="icon">
+                                    <img src="{% static 'frontend/img/call.png' %}" alt="">
+                                </div>
+                                <div class="content">
+                                    <p>
+                                        <span>Call Us:</span> +91 9900000120
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="single-address">
+                                <div class="icon">
+                                    <img src="{% static 'frontend/img/envalope.png' %}" alt="">
+                                </div>
+                                <div class="content">
+                                    <p>
+                                        <span>Email us: </span> support@loanplus.com
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="single-address">
+                                <a href="{% url 'loan_form' %}" class="button btn btn-default btn-sm"><i class="fa fa-reply-all"></i> APPLY NOW</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-11 col-lg-11">
+                        <div id="cssmenu">
+                            <ul>
+                                <li><a href="{% url 'index' %}">Home</a></li>
+                                <li {% if page == "About" %}class="current-menu-item"{% endif %}><a href="{% url 'about' %}">About us </a></li>
+                                <li {% if page == "Services" %}class="current-menu-item"{% endif %}><a href="{% url 'services' %}">Services</a></li>
+                                <li {% if page == "EMI Calculator" %}class="current-menu-item"{% endif %}> <a href="{% url 'calculator' %}">EMI Calculator</a></li>
+                                <li {% if page == "Contact" %}class="current-menu-item"{% endif %}><a href="#">Contact us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <div class="searchbtn">
+                            <a href="#" class="fa fa-sistrix"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="searchform">
+            <input type="text" name="s" placeholder="Search Here">
+            <button><i class="fa fa-times"></i></button>
+        </div>
+    </header>
+    <!-- end of header area -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>{{ page }}</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ page }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+    <!-- start footer area -->
+    <section class="footer-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-lg-5">
+                    <div class="footer-widget">
+                        <div class="footer-title">
+                            <img src="{% static 'frontend/img/footer-logo.png' %}" alt="" />
+                        </div>
+                        <p>Over 24 years experience and knowledge Loanplus wе’rе hеrе to рrоvіdе уоu wіth fіnаnсіаl ѕоlutіоnѕ fоr аll уоur lеndіng needs. Whether you are lооkіng fоr any kind of loan, оur lending tеаm wіll explain lеndіng орtіоnѕ to уоu іn a ѕtrаіghtfоrwаrd mаnnеr.</p>
+                        <div class="mail">
+                            <span>Any Queries :</span>support@loanplus.com
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-3">
+                    <div class="footer-widget pages-widget">
+                        <div class="footer-title">
+                            <h4>Solutions</h4>
+                        </div>
+                        <ul>
+                            <li><a href="{% url 'services' %}">Personal Loan</a></li>
+                            <li><a href="{% url 'services' %}">Car Loan</a></li>
+                            <li><a href="{% url 'services' %}">Home Loan</a></li>
+                            <li><a href="{% url 'services' %}">Education Loan</a></li>
+                            <li><a href="{% url 'services' %}">Business Loan </a></li>
+                            <li><a href="{% url 'services' %}">Perday Loan </a></li>
+                        </ul>
+                    </div>
+                </div>
+         
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-widget">
+                        <div class="footer-title">
+                            <h4>Newsletter</h4>
+                        </div>
+                        <div class="form-widget">
+                            <p>Subscribe to our newsletter and get latest news related to loan,credit cards,perday loan,interates rate.</p>
+                            <form action="#" method="get">
+                                <div class="newsletter">
+                                    <label for="envalope" class="fa fa-envelope"></label>
+                                    <input id="envalope" type="email" name="email" placeholder="Email address">
+                                </div>
+                                <button type="submit" class="button btn btn-default btn-lg">Subscribe +</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="copy-right-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <div class="copyright-text">
+                        <p><i class="fa fa-copyright"></i> 2019 Loanplus. All Rights Reserved</p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="footer-nave">
+                        <a href="#"><i class="fa fa-facebook-square"></i></a>
+                        <a href="#"><i class="fa fa-twitter-square"></i></a>
+                        <a href="#"><i class="fa fa-linkedin-square"></i></a>
+                        <a href="#"><i class="fa fa-pinterest-square"></i></a>
+                        <a href="#"><i class="fa fa-vimeo-square"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of footer area -->
+
+  <!-- Optional JavaScript -->
+    <script src="{% static 'frontend/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js' %}"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+    <script src="{% static 'frontend/js/popper.min.js' %}"></script>
+    <script src="{% static 'frontend/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'frontend/js/jquery.nice-select.js' %}"></script>
+    <script src="{% static 'frontend/js/menumaker.js' %}"></script>
+    <script src="{% static 'frontend/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'frontend/js/slider.js' %}"></script>
+    <script src="{% static 'frontend/js/active.js' %}"></script>
+    <script src="{% static 'frontend/js/calculator.js' %}"></script>
+</body>
+</html>

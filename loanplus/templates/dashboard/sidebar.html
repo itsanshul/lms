@@ -1,0 +1,83 @@
+{% with page=request.resolver_match.url_name %}
+        {% if request.user.is_superuser or request.user.is_staff %}
+                <ul class="nav navbar-nav">
+                    <li {% if page == 'dashboard' %}class="active"{% endif %}>
+                        <a href="{% url 'dashboard' %}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                    </li>
+
+                    <li class="menu-title">Accounts</li><!-- /.menu-title -->
+                    <li class="menu-item-has-children dropdown {% if page == 'user_account' %}active{% endif %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>User</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-plus-square-o"></i><a href="{% url 'user_account' view='add' %}"> Add User</a></li>
+                            <li><i class="fa fa-tasks"></i><a href="{% url 'user_account' view='all' %}"> View Users</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="menu-title">Loan</li><!-- /.menu-title -->
+                    <li class="menu-item-has-children dropdown {% if page == 'admin_loan_applications' %}active{% endif %}">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-file-text-o"></i>Loan Applications</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-minus-square-o"></i><a href="{% url 'admin_loan_applications' view='all' %}">All Applications</a></li>
+                            <li><i class="fa fa-square-o"></i><a href="{% url 'admin_loan_applications' view='pending' %}">Pending Applications</a></li>
+                        </ul>
+                    </li>
+                    <li {% if page == 'admin_loan_details' %}class="active"{% endif %}>
+                        <a href="{% url 'admin_loan_details' view='all' %}"> <i class="menu-icon fa fa-tasks"></i>Loan Details</a>
+                    </li>
+
+                    <li class="menu-title">Payments</li><!-- /.menu-title -->
+                    <li {% if page == 'payment_history' %}class="active"{% endif %}>
+                        <a href="{% url 'payment_history' %}"> <i class="menu-icon fa fa-inr"></i>Payment History</a>
+                    </li>
+                    <li {% if page == 'make_payment' %}class="active"{% endif %}>
+                        <a href="{% url 'make_payment' %}"> <i class="menu-icon fa fa-credit-card"></i>Make Payment</a>
+                    </li>
+
+                    <li class="menu-title">Profile</li><!-- /.menu-title -->
+                    <li {% if page == 'profile' %}class="active"{% endif %}>
+                        <a href="{% url 'profile' %}"> <i class="menu-icon fa fa-user"></i>Change Profile</a>
+                    </li>
+                    <li {% if page == 'change_password' %}class="active"{% endif %}>
+                        <a href="{% url 'change_password' %}"> <i class="menu-icon fa fa-lock"></i>Change Password</a>
+                    </li>
+
+                </ul>                        
+        {% else %}
+        <!-- Left Panel -->
+    
+                <ul class="nav navbar-nav">
+                    <li {% if page == 'dashboard' %}class="active"{% endif %}>
+                        <a href="{% url 'dashboard' %}"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                    </li>
+                    <li class="menu-title">Loan</li><!-- /.menu-title -->
+                    <li {% if page == 'loan_form' %}class="active"{% endif %} >
+                        <a href="{% url 'loan_form' %}"><i class="menu-icon fa fa-hand-o-right"></i><span class="badge badge-primary" style="float:left;font-size:14px">Apply Now</span></a>
+                    </li>
+                    <li {% if page == 'loan_applications' %}class="active"{% endif %}>
+                        <a href="{% url 'loan_applications' view='all' %}"> <i class="menu-icon fa fa-file-text-o"></i>Loan Applications</a>
+                    </li>
+                    <li {% if page == 'loan_details' %}class="active"{% endif %}>
+                        <a href="{% url 'loan_details' view='my' %}"> <i class="menu-icon fa fa-tasks"></i>Loan Details</a>
+                    </li>
+
+                    <li class="menu-title">Payments</li><!-- /.menu-title -->
+                    <li {% if page == 'payment_history' %}class="active"{% endif %}>
+                        <a href="{% url 'payment_history' %}"> <i class="menu-icon fa fa-inr"></i>Payment History</a>
+                    </li>
+                    <li {% if page == 'make_payment' %}class="active"{% endif %}>
+                        <a href="{% url 'make_payment' %}"> <i class="menu-icon fa fa-credit-card"></i>Make Payment</a>
+                    </li>
+
+                    <li class="menu-title">Profile</li><!-- /.menu-title -->
+                    <li {% if page == 'profile' %}class="active"{% endif %}>
+                        <a href="{% url 'profile' %}"> <i class="menu-icon fa fa-user"></i>Change Profile</a>
+                    </li>
+                    <li {% if page == 'change_password' %}class="active"{% endif %}>
+                        <a href="{% url 'change_password' %}"> <i class="menu-icon fa fa-lock"></i>Change Password</a>
+                    </li>
+
+                </ul>
+    <!-- /#left-panel -->
+{% endif %}
+{% endwith %}

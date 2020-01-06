@@ -1,0 +1,109 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% elif message.tags == 'info' %}
+        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            <span class="badge badge-pill badge-danger">Cancelled</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+{% endfor %}
+    <div class="col-md-8 offset-md-2">
+                        <div class="card">
+                            <div class="card-header"><strong>Loan Application</strong><small> Form</small></div>
+                            <div class="card-body card-block">
+
+                                 <form action="{% url 'admin_approve_loan' app.app_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{app.app_id}}" name="app_id" />
+                                    <input type="hidden" value="{{app.user_id}}" name="user_id" />
+                                    <div class="row form-group">
+                                        <div class="col col-8"><label for="name-input" class=" form-control-label">Name</label>
+                                        <input type="text" required="" name="name" placeholder="Enter Full Name" class="form-control" value="{{app.cust_name}}"></div>
+
+                                        <div class="col col-4"><label for="text-input" class=" form-control-label">Age</label>
+                                        <input type="number" required="" name="age" placeholder="Enter your age" class="form-control" value="{{app.age}}"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label for="email-input" class=" form-control-label">Email</label>
+                                        <input type="email" required="" name="email" placeholder="Enter Email" class="form-control" value="{{app.email}}"><small class="help-block form-text">'@' include with proper address</small></div>
+
+                                        <div class="col col-6"><label for="phone-input" class=" form-control-label">Phone</label>
+                                        <input type="number" required="" name="phone" placeholder="Enter Phone" class="form-control" value="{{app.phone}}"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <label for="city" class=" form-control-label">Type of Loan</label>
+                                                <select name="type_of_loan" class="form-control" required="">
+                                                <option value="">Select Loan Category</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 1 %}selected{% endif %} value="1">Personal Loan   ~interest from 12.0%</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 2 %}selected{% endif %} value="2">Home Loan   ~interest from 10.0%</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 3 %}selected{% endif %} value="3">Car Loan   ~interest from 11.0%</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 4 %}selected{% endif %} value="4">Education Loan   ~interest from 12.0%</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 5 %}selected{% endif %} value="5">Business Loan   ~interest from 15.0%</option>
+                                                    
+                                                        <option {% if app.loan_type_id == 6 %}selected{% endif %} value="6">Payday Loan   ~interest from 8.0%</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col col-4"><label class=" form-control-label">EMI Tenure</label>
+                                        <input type="number" required="" name="emi_tenure" placeholder="Enter in months" class="form-control" value=""><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label class=" form-control-label">Loan Amount</label>
+                                        <input value="{{app.loan_amount}}" required="" type="number" name="loan_amt" placeholder="Enter Loan Amount" class="form-control"></div>
+
+                                        <div class="col col-6"><label class=" form-control-label">Income p/a</label>
+                                        <input value="{{app.income}}" required="" type="number" name="income" placeholder="Enter your Income" class="form-control"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-12"><label class=" form-control-label">Address</label>
+                                            <textarea required="" name="address" placeholder="Enter your address" class="form-control">{{app.address}}</textarea>
+                                        </div>
+                                    </div>    
+                                    
+
+                                    <br>
+                                    <br>
+                                    <br>
+                                    {% if app.status == 'approved' or app.status == 'cancelled' %}
+                                    {% else %}
+                                    <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="submit" name="submit" value="approve" class="btn btn-outline-success btn-lg btn-block">Approve</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" name="submit" value="cancel" class="btn btn-outline-danger btn-lg btn-block">Cancel</button>
+                                    </div>
+                                    </div>
+                                    {% endif %}
+                                
+
+                                </form>        
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock  %}

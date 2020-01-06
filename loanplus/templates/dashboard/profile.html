@@ -1,0 +1,84 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+{% endfor %}
+{% if request.resolver_match.url_name == 'profile' %}
+    <div class="col-lg-6 offset-lg-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Update</strong> Profile
+                            </div>
+                            <div class="card-body card-block">
+                                <form action="profile" method="post" class="form-horizontal">
+                                {% csrf_token %}
+                                    {% if request.user.is_superuser or request.user.is_staff %}
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label class="form-control-label">Full Name</label></div>
+                                            <div class="col-12 col-md-9"><input required type="text" name="name" class="form-control" value="{{admin.first_name}} {{admin.last_name}}"><small class="help-block">Please enter your Name</small></div>
+                                        </div>
+                                    {% else %}
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label class=" form-control-label">PAN Number</label></div>
+                                            <div class="col-12 col-md-9"><input required type="text" name="pan_no" class="form-control" value="{{profile.pan_no}}"><small class="help-block">Please enter your PAN</small></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label class=" form-control-label">Phone</label></div>
+                                            <div class="col-12 col-md-9"><input required type="text" name="phone" class="form-control" value="{{profile.phone}}"><small class="help-block">Please enter your Phone</small></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3"><label class=" form-control-label">Address</label></div>
+                                            <div class="col-12 col-md-9"><textarea required name="address" rows="3" class="form-control">{{profile.address}}</textarea><small class="help-block">Please enter your Address</small></div>
+                                        </div>                                       
+                                    {% endif %}
+                              
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-outline-success btn-sm">
+                                <i class="fa fa-magic"></i>&nbsp; Update
+                                </button>
+                                <button type="reset" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-ban"></i> Reset
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                          
+                </div>
+{% else %}
+<div class="col-lg-6 offset-lg-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Change</strong> Password
+                            </div>
+                            <div class="card-body card-block">
+                                <form action="change-password" method="post" class="form-horizontal">
+                                {% csrf_token %}
+                                    <div class="row form-group">
+                                        <div class="col col-md-3"><label class=" form-control-label">Password</label></div>
+                                        <div class="col-12 col-md-9"><input type="password" name="new_pwd" class="form-control"><span class="help-block">Please enter your new password</span></div>
+                                    </div>
+                                
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="fa fa-dot-circle-o"></i> Change Password
+                                </button>
+                                <button type="reset" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-ban"></i> Reset
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                </div>                
+{% endif %}
+{% endblock  %}

@@ -1,0 +1,26 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+
+<section class="error-page section-padding">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="error-content">
+                        <h4>Opps! You have some problems</h4>
+                        <h2>404</h2>
+                        <h5>Page you are looking for that not found.</h5>
+                        <a href="{% url 'index' %}" class="btn-primary btn btn-sm">Back to home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if request.user.is_superuser and request.user.is_staff %}
+            {{'SuperUser'}}
+    {% else %}            
+            {{'Not SuperUser'}}
+    {% endif %}
+
+
+{% endblock content %}    

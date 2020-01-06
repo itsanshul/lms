@@ -1,0 +1,168 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+                <div class="row">
+                <div class="col col-lg-12">
+                    <section class="card">
+                        <div class="card-body text-secondary"><b>{{view}} User Account</b></div>
+                    </section>
+                </div>
+{% for message in messages %}
+ {% if message.tags == 'info' %}
+        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            <span class="badge badge-pill badge-danger">Error</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+{% elif message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>        
+{% endif %}
+{% endfor %}                
+    {% if view == 'Add' %}
+        <div class="col-lg-8 offset-lg-2">
+                        <div class="card">
+                            <div class="card-header"><strong>User</strong><small> Form</small></div>
+                            <div class="card-body card-block">
+                            <form action="{% url 'user_account' view='add' %}" method="post">
+                            {% csrf_token %}
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <label class=" form-control-label">First Name</label>
+                                        <input type="text" name="fname" placeholder="Enter first name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class=" form-control-label">Last Name</label>
+                                        <input type="text" name="lname" placeholder="Enter last name" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class=" form-control-label">Username</label>
+                                    <input type="text" name="uname" placeholder="Enter username" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class=" form-control-label">Email</label>
+                                    <input type="email" name="email" placeholder="Enter your email" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class=" form-control-label">Password</label>
+                                    <input type="password" name="pwd" placeholder="Choose a password" class="form-control" required>
+                                </div>
+                                {% if request.user.is_superuser %}
+                                <div class="form-group">
+                                    <input name="is_staff" type="checkbox" class="switch-input">
+                                    <label class="form-control-label">Staff Account</label>
+                                </div>
+                                <div class="form-group">
+                                    <input name="is_superuser" type="checkbox" class="switch-input">
+                                    <label class="form-control-label">Admin Account</label>
+                                </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" name="submit" value="create" class="btn btn-outline-success btn-lg btn-block">Create Account</button>
+                                    </div>
+                                    </div>
+                                </form>    
+                            </div>
+                        </div>
+                    </div>
+    {% elif view == 'All' %}
+            <div class="col-md-12">
+                        <div class="card">
+                        <div class="card-body">
+                            <div class="table-stats order-table ov-h">
+                                <table id="bootstrap-data-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th class="serial">id</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            {% if request.user.is_superuser %}
+                                            <th>is_superuser</th>
+                                            <th>is_staff</th>
+                                            {% endif %}
+                                            <th>Date Joined</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            {% for user in users %}       
+                                        <tr>
+                                            <td><a href="{% url 'user_account' user.id %}" class="fa fa-share-square-o"></a></td>
+                                            <td> {{user.id}} </td>    
+                                            <td> {{user.first_name}} </td>    
+                                            <td> {{user.last_name}} </td>
+                                            <td>{{user.username}}</td>
+                                            <td>{{user.email}}</td>
+                                            {% if request.user.is_superuser %}
+                                            <td>{{user.is_superuser}}</td>
+                                            <td>{{user.is_staff}}</td>
+                                            {% endif %}
+                                            <td>{{user.date_joined}}</td>
+                                        </tr>
+                            {% endfor %}                               
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    {% else %}
+
+        <div class="col-lg-8 offset-lg-2">
+                        <div class="card">
+                            <div class="card-header"><strong>User</strong><small> Form</small></div>
+                            <div class="card-body card-block">
+                            <form action="{% url 'user_account' view=view %}" method="post">
+                            {% csrf_token %}
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <label class=" form-control-label">First Name</label>
+                                        <input type="text" value="{{users.first_name}}" name="fname" placeholder="Enter first name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class=" form-control-label">Last Name</label>
+                                        <input type="text" value="{{users.last_name}}" name="lname" placeholder="Enter last name" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class=" form-control-label">Username</label>
+                                    <input type="text" value="{{users.username}}" name="uname" placeholder="Enter username" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class=" form-control-label">Email</label>
+                                    <input type="email" value="{{users.email}}" name="email" placeholder="Enter your email" class="form-control" required>
+                                </div>
+                                {% if request.user.is_superuser %}
+                                <div class="form-group">
+                                    <input {% if users.is_staff %}checked{% endif %} name="is_staff" type="checkbox" class="switch-input">
+                                    <label class="form-control-label">Staff Account</label>
+                                </div>
+                                <div class="form-group">
+                                    <input {% if users.is_superuser %}checked{% endif %} name="is_superuser" type="checkbox" class="switch-input">
+                                    <label class="form-control-label">Admin Account</label>
+                                </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" name="submit" value="update" class="btn btn-outline-success btn-lg btn-block">Update</button>
+                                    </div>
+                                    </div>
+                                </form>    
+                            </div>
+                        </div>
+                    </div>
+
+
+    {% endif %}
+{% endblock  %}

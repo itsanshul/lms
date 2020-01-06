@@ -1,0 +1,89 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+{% for message in messages %}
+{% if message.tags == 'success' %}
+    <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+                                        <span class="badge badge-pill badge-success">Success</span>
+                                        {{message}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+    </div>
+    {% endif %}
+{% endfor %}
+
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header"><strong>Loan Application</strong><small> Form</small></div>
+                            <div class="card-body card-block">
+
+                                 <form action="apply-now" method="POST">
+                                    {% csrf_token %}
+                                 <div class="row form-group">
+                                
+                                    <div class="col-8">
+                                            <div class="form-group"><label class=" form-control-label"><i>Signed in as</i></label>
+                                                <p class="form-control-static">{{user.username}}</p>
+                                                <input type="hidden" value="{{user.id}}" name="id"/>
+                                            </div>
+                                        </div>
+                                     </div>
+                                    <div class="row form-group">
+                                        <div class="col col-8"><label for="name-input" class=" form-control-label">Name</label>
+                                        <input type="text" required name="name" placeholder="Enter Full Name" class="form-control"></div>
+
+                                        <div class="col col-4"><label for="text-input" class=" form-control-label">Age</label>
+                                        <input type="number" required name="age" placeholder="Enter your age" class="form-control"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label for="email-input" class=" form-control-label">Email</label>
+                                        <input type="email" required name="email" placeholder="Enter Email" class="form-control"><small class="help-block form-text">'@' include with proper address</small></div>
+
+                                        <div class="col col-6"><label for="phone-input" class=" form-control-label">Phone</label>
+                                        <input type="number" required name="phone" placeholder="Enter Phone" class="form-control"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <label for="city" class=" form-control-label">Type of Loan</label>
+                                                <select name="type_of_loan" class="form-control" required>
+                                                <option value="">Select Loan Category</option>
+                                                    {% for loan in type_loan %}
+                                                        <option value="{{loan.id}}">{{loan.type_of_loan}}&emsp;&emsp;&emsp;<span>~interest from {{loan.rate}}%</span></option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-6"><label class=" form-control-label">Loan Amount</label>
+                                        <input required type="number" name="loan_amt" placeholder="Enter Loan Amount" class="form-control"></div>
+
+                                        <div class="col col-6"><label class=" form-control-label">Income p/a</label>
+                                        <input required type="number" name="income" placeholder="Enter your Income" class="form-control"><small class="help-block form-text"></small></div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col col-12"><label class=" form-control-label">Address</label>
+                                            <textarea required name="address" placeholder="Enter your address" class="form-control"></textarea>
+                                        </div>
+                                    </div>    
+                                    
+
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                <button type="submit" class="btn btn-outline-success btn-lg btn-block">Submit</button>
+
+                                </form>        
+                            </div>
+                        </div>
+                    </div>
+    </div>
+
+{% endblock  %}
+ 

@@ -1,0 +1,50 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% block content %}
+
+    
+<!-- start services image page -->
+
+<section class="services-image-page section-padding">
+    <div class="container">
+        <div class="row">
+        {% for loan in loans %}
+            <div class="col-md-4">
+                <div class="single-services-image">
+                    <div class="services-thumb">
+                        <a href="single-services.html"><img src="{% static 'frontend/img/portfolio-' %}{{loan.id}}{{ '.jpg' }}" alt=""></a>
+                    </div>
+                    <div class="services-img-content">
+                        <a href="single-services.html"><h4>{{loan.type_of_loan}}</h4></a>
+                        <p>Duration: <i>{{loan.duration}} months</i><br>Interest: <i>{{loan.rate}}%</i></p>
+                        <a href="#">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- end of services image -->
+
+    <!-- start check rate btn area -->
+	<section class="check-rate-btn-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="check-your-rate-text">
+                        <h4>Checking your loan options does not affect your credit score</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="check-your-rate-btn">
+                        <a href="#" class="btn btn-default btn-sm">CHECK YOUR RATE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end of check rate btn area -->
+
+{% endblock  %}

@@ -1,0 +1,112 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+            <span class="badge badge-pill badge-success">Success</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+ {% elif message.tags == 'info' %}
+        <div class="sufee-alert alert with-close alert-danger alert-dismissible fade show">
+            <span class="badge badge-pill badge-danger">Notice</span>
+                {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+{% endif %}
+{% endfor %}
+    <div class="col-lg-6 offset-lg-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong class="card-title">EMI Payment</strong>
+                            </div>
+                            <div class="card-body">
+                                <!-- Credit Card -->
+                                <div id="pay-invoice">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3 class="text-center">Pay Invoice</h3>
+                                        </div>
+                                        <hr>
+                                        <form action="{% url 'make_payment' %}" method="post" novalidate="novalidate">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="cust_id" name="cust_id" />
+                                            <div class="form-group text-center">
+                                                <ul class="list-inline">
+                                                    <li class="list-inline-item"><i class="fa fa-cc-visa fa-2x"></i></li>
+                                                    <li class="list-inline-item"><i class="fa fa-cc-mastercard fa-2x"></i></li>
+                                                    <li class="list-inline-item"><i class="fa fa-cc-amex fa-2x"></i></li>
+                                                    <li class="list-inline-item"><i class="fa fa-cc-discover fa-2x"></i></li>
+                                                </ul>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cc-payment" class="control-label mb-1">Select Loan</label>
+                                                {% if request.user.is_superuser or request.user.is_staff %}
+                                                    <input type="text" name="loan_id" id="select" class="form-control" />
+                                                {% else %}
+                                                <select name="loan_id" id="select" class="form-control">
+                                                    <option value="0">Please select</option>
+                                                    {% for loan in loans %}
+                                                    <option value="{{loan.loan_id}}">{{loan.loan_type.type_of_loan}}--{{loan.loan_amount}}--{{loan.cust_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                {% endif %}
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label mb-1">EMI Amount</label>
+                                                <input id="emi_amount" name="emi_amount" type="text" class="form-control" readonly>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label mb-1">No of Payment</label>
+                                                <input id="no_of_payment" name="no_of_payment" type="text" class="form-control" readonly>
+                                            </div>
+                                           
+                                            <div>
+                                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                                    <i class="fa fa-lock fa-lg"></i>&nbsp;
+                                                    <span id="payment-button-amount">Pay <span id="emi_amt"></span></span>
+                                                    <span id="payment-button-sending" style="display:none;">Sending…</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!-- .card -->
+
+                    </div>
+                    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                    <script>
+                        $(document).ready(function(){
+                            var myFunction = function(){
+                                request_url = '/showPayAmt';
+                                loan_id = $(this).children("option:selected").val();
+                                if (!loan_id){
+                                    loan_id = $(this).val();
+                                }
+                                $.ajax({
+                                    url: request_url,
+                                    data: {"loan_id":loan_id},
+                                    success: function(data){
+                                        $('#emi_amount').val(data.emi);
+                                        $('#emi_amt').html('₹'+data.emi);
+                                        $('#no_of_payment').val(data.no_pay);
+                                        $('#cust_id').val(data.cust_id);
+                                    },
+                                    errors: function(e){
+                                        alert(e);
+                                    }
+                                })
+                            }
+                            $('#select')
+                            .change(myFunction)
+                            .blur(myFunction)
+                        });
+                    </script>
+{% endblock  %}
